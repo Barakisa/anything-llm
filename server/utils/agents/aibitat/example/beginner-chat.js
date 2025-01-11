@@ -11,7 +11,7 @@ const Agent = {
 
 const aibitat = new AIbitat({
   provider: "openai",
-  model: "gpt-4o",
+  model: "gpt-4o-mini",
 })
   .use(cli.plugin())
   .function({
