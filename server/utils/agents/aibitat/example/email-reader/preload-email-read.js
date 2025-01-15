@@ -164,24 +164,6 @@ const aibitat = new AIbitat({
     - The list should be clear and organized, containing necessary details from each email.
     - Once complete, provide the to-do list for @HUMAN to review and confirm.`
   })
-  // .agent(Agent.HUMAN, {
-  //   interrupt: "ALWAYS",
-  //   role: "You are a human assistant.",
-  // })
-  // .agent(Agent.ListFetcherAI, {
-  //   functions: ["fetch-inbox"],
-  //   role: "You are a helpful assitant that fetches emails from gmail api. The only thing you do is fetch the email ids and provide them to the conversation."
-  // })
-  // .agent(Agent.SingleFetcherAI, {
-  //   functions: ["fetch-single-email"],
-  //   role: "You are a helpful AI assistant that gets email content using email ids. You remember to fetch emails one by one using the list of ids provided by @fetcher, and you give email content verbatim inside \"quotes\" together with id to eveluator for evaluation. The evaluator may ask to get another email, so you will get the next one on the previosuly mentioned list. You will check each email id only once."
-  // })
-  // .agent(Agent.EvaluatorAI, {
-  //   role: "You are a helpful AI assistant that evaluates querries by @human against emails found by @todoer. Whenever @todoer provides content of an email, you check whether it sufficiently answers the querry. If the email may answer the querry, but there is insufficient detail, you ask @human to provide feedback. In the case that email answers the querry, you ask human for another querry. If the email doesn't answer the querry, you ask todoer to get another different email for evaluation. Remember to check other languages as well, the email may not be in english. Whenever human says that there are no more querries, you ask the @todoer to generate a todo list containing the selected emails."
-  // })
-  // .agent(Agent.TodoerAI, {
-  //   role: "You are a todo list generator. You take emails approved by @evaluatorai, and put them into a todo list. You generate a markdown file that contains the list."
-  // })
   .channel("Email todo list", [
     Agent.HUMAN,
     Agent.SingleFetcherAI,
