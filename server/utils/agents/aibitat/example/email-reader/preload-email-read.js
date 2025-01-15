@@ -18,7 +18,7 @@ const Agent = {
 
 const aibitat = new AIbitat({
   provider: "openai",
-  model: "gpt-4o",
+  model: "gpt-4o-mini",
 })
   .use(cli.plugin({simulateStream: false}))
 
@@ -140,7 +140,7 @@ const aibitat = new AIbitat({
   .agent(Agent.SingleFetcherAI, {
     functions: ["fetch-single-email"],
     role: `You retrieve the content of emails based on their ID.
-    - You fetch email content one by one from the list provided by @ListFetcherAI, the IDs are a sequence of character usually beginning with 193.
+    - You fetch email content one by one from the list provided by @ListFetcherAI.
     - You provide the email content verbatim, enclosed in "quotes," along with the email ID.
     - You ensure that each email ID is only checked once.
     - If @EvaluatorAI requests another email, you fetch the next one in the list.
@@ -151,10 +151,10 @@ const aibitat = new AIbitat({
     role: `You evaluate whether an email sufficiently answers the human's query.
     - When @SingleFetcherAI provides an email, check if it answers the query.
     - If the email is relevant but lacks detail, ask @HUMAN for clarification or refinement.
-    - If the email fully answers the query, ask @HUMAN if they have another query.
     - If the email does not answer the query, request @SingleFetcherAI to fetch another email.
     - Consider different languages, as emails may not be in English.
-    - When @HUMAN confirms that there are no more queries, instruct @TodoerAI to generate a to-do list of selected emails.`
+    - After checking querried amount of emails (or 10, if querry doesnt specify),  instruct @TodoerAI to generate a to-do list of selected emails. 
+    - Indtruct @TodoerAI to sort them by dates, if not otherwise specified`
   })
   
   .agent(Agent.TodoerAI, {
@@ -198,7 +198,7 @@ async function main() {
   await aibitat.start({
     from: Agent.HUMAN,
     to: "Email todo list",
-    content: "Hello! Please fetch my emails! Im n.dziaugys@gmail.com. Make a todo list of my recent 10 emails but only include the ones with specific dates.",
+    content: "Hello! Please fetch my emails! Im n.dziaugys@gmail.com. Make a todo list of my recent 10 emails but only include the ones that have specified dates and/or date ranges inside them.",
   });
 }
 
