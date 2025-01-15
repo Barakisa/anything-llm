@@ -8,7 +8,7 @@ const {
 require("dotenv").config({ path: `../../../../.env.development` });
 
 const aibitat = new AIbitat({
-  model: "gpt-4o",
+  model: "gpt-4o-mini",
 })
   .use(cli.plugin())
   .use(fileHistory.plugin())

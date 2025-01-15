@@ -61,7 +61,7 @@ async function runAIbitat(socket) {
 
   const aibitat = new AIbitat({
     provider: "openai",
-    model: "gpt-4",
+    model: "gpt-4o-mini",
   })
     .use(websocket.plugin({ socket }))
     .use(webBrowsing.plugin())

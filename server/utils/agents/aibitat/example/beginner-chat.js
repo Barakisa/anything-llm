@@ -49,7 +49,7 @@ async function main() {
   await aibitat.start({
     from: Agent.HUMAN,
     to: Agent.AI,
-    content: `Please, talk about the documentation of AIbitat.`,
+    content: `Hello!`,
   });
 }
 

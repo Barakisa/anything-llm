@@ -129,7 +129,7 @@ class AIbitat {
       throw new Error(`Channel configuration "${channel}" not found`);
     }
     return {
-      maxRounds: 10,
+      maxRounds: 50,
       role: "",
       ...config,
     };

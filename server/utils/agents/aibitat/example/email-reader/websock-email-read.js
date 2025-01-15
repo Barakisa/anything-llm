@@ -16,6 +16,8 @@ const app = express();
 require("@mintplex-labs/express-ws").default(app); // load WebSockets in non-SSL mode.
 require("dotenv").config({ path: `../../../../../.env.development` });
 
+const controllers = require('./controllers');
+
 // Debugging echo function if this is working for you.
 // app.ws('/echo', function (ws, req) {
 //   ws.on('message', function (msg) {
@@ -66,7 +68,7 @@ async function runAIbitat(socket) {
     throw new Error(
       "This example requires a valid OPEN_AI_KEY in the env.development file"
     );
-  console.log(chalk.blue("Booting AIbitat class & starting agent(s)"));
+  console.log(chalk.blue("Booting AIbitat class & starting agent(s), preping Gmail API"));
   const aibitat = new AIbitat({
     provider: "openai",
     model: "gpt-4o-mini",
@@ -74,18 +76,45 @@ async function runAIbitat(socket) {
     .use(websocket.plugin({ socket }))
     .use(webBrowsing.plugin())
     .use(webScraping.plugin())
+    .function({
+      name: "fetch-emails",
+        description: "Fetch the latest emails from the user's Gmail account.",
+        parameters: {
+            type: "object",
+            properties: {
+                email: {
+                    type: "string",
+                    description: "The user's Gmail address",
+                },
+            },
+            required: ["email"],
+        },
+        handler: async ({ email }) => {
+          if (!email) {
+              return "Error: No email provided. Please specify an email address.";
+          }
+  
+          try {
+              const emails = await controllers.getMails(email);
+              return `Here are your latest emails: ${JSON.stringify(emails)}`;
+          } catch (error) {
+              console.error("Error fetching emails:", error);
+              return "An error occurred while fetching emails.";
+          }
+      },
+    })
     .agent(Agent.HUMAN, {
       interrupt: "ALWAYS",
-      role: "You are a human assistant intereseted in evolution of words.",
+      role: "You are a human assistant intereseted in evolution of swearwords.",
     })
     .agent(Agent.AI, {
-      role: "You are a helpful ai assistant who likes to chat with the user who an also browse the web for questions it does not know or have real-time access to.",
-      functions: ["web-browsing"],
+      role: "You are a helpful AI assistant that can fetch emails from Gmail.",
+      functions: ["fetch-emails"],
     });
 
   await aibitat.start({
     from: Agent.HUMAN,
     to: Agent.AI,
-    content: `How are you doing today?`,
+    content: `Please fetch me my emails, im n.dziaugys@gmail.com`,
   });
 }
