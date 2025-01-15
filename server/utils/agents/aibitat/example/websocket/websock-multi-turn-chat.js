@@ -69,14 +69,14 @@ async function runAIbitat(socket) {
   console.log(chalk.blue("Booting AIbitat class & starting agent(s)"));
   const aibitat = new AIbitat({
     provider: "openai",
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
   })
     .use(websocket.plugin({ socket }))
     .use(webBrowsing.plugin())
     .use(webScraping.plugin())
     .agent(Agent.HUMAN, {
       interrupt: "ALWAYS",
-      role: "You are a human assistant.",
+      role: "You are a human assistant intereseted in evolution of words.",
     })
     .agent(Agent.AI, {
       role: "You are a helpful ai assistant who likes to chat with the user who an also browse the web for questions it does not know or have real-time access to.",

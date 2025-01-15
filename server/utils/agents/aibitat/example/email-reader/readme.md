@@ -1,0 +1,1 @@
+to start, `node email-reader.js` from this dir

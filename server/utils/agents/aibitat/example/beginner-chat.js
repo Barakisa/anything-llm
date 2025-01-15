@@ -11,7 +11,7 @@ const Agent = {
 
 const aibitat = new AIbitat({
   provider: "openai",
-  model: "gpt-4o",
+  model: "gpt-4o-mini",
 })
   .use(cli.plugin())
   .function({
@@ -49,7 +49,7 @@ async function main() {
   await aibitat.start({
     from: Agent.HUMAN,
     to: Agent.AI,
-    content: `Please, talk about the documentation of AIbitat.`,
+    content: `Hello!`,
   });
 }
 
